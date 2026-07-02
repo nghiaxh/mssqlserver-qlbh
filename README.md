@@ -2,6 +2,12 @@
 
 Chạy SQL Server 2022 bằng Docker với database mẫu **QuanLyBanHang**.
 
+## Yêu cầu
+
+- Docker
+- **PowerShell** (Windows) hoặc **bash** (Linux/macOS)
+- `sqlcmd` được cài sẵn trong container (đã có sẵn)
+
 ## Setup
 
 ### 1. Tạo file `.env`
@@ -14,14 +20,21 @@ echo SA_PASSWORD=QLBH_StrongPass123! > .env
 
 ### 2. Khởi động
 
-```powershell
+```bash
 docker compose up
 ```
 
 ### 3. Load database
 
+**PowerShell:**
 ```powershell
 .\scripts\load-database.ps1
+```
+
+**Bash:**
+```bash
+chmod +x scripts/*.sh
+./scripts/load-database.sh
 ```
 
 ### 4. Kết nối
@@ -29,7 +42,7 @@ docker compose up
 | Công cụ | Thông số |
 |---------|----------|
 | SSMS | `localhost,1433` / `sa` / mật khẩu `.env` |
-| SQLCMD | `.\scripts\connect.ps1` |
+| SQLCMD | `.\scripts\connect.ps1` (PS) hoặc `./scripts/connect.sh` (bash) |
 
 ## Lệnh Docker
 
@@ -43,4 +56,4 @@ docker compose up
 
 - **Port 1433 trùng**: đổi port trong `docker-compose.yml`
 - **Đổi mật khẩu**: sửa `.env`, dùng `-Password "..."` với script
-- **Tạo lại DB**: `docker compose down -v` → chạy lại từ bước 2
+- **Tạo lại DB**: `docker compose down -v` và chạy lại từ bước 2
