@@ -30,10 +30,10 @@ foreach ($dir in $projectDirs) {
     foreach ($file in $csFiles) {
         $content = Get-Content -LiteralPath $file.FullName -Raw -ErrorAction SilentlyContinue
         if ($null -eq $content) { continue }
-        if ($content -notmatch 'strConnectionString\s*=\s*@"Data Source=') { continue }
+        if ($content -notmatch 'strConnectionString\s*=\s*@"') { continue }
 
         $total++
-        $newContent = $content -replace 'Data Source=[^;]+;Initial Catalog=[^;]+;User ID=[^;]+;Password=[^"]+', $connectionString
+        $newContent = $content -replace '(strConnectionString\s*=\s*@")[^"]*(")', "`$1$connectionString`$2"
 
         if ($newContent -ne $content) {
             Set-Content -LiteralPath $file.FullName -Value $newContent -NoNewline -Encoding UTF8
